@@ -1,87 +1,152 @@
 // implementation of class DArray
 #include "DArray.h"
+#include <iostream>
+#include <cstdlib>
 
-// default constructor
+// 默认构造函数
 DArray::DArray() {
-	Init();
+    Init();
 }
 
-// set an array with default values
+// 使用指定大小和默认值初始化数组
 DArray::DArray(int nSize, double dValue) {
-	//TODO
+    // 先初始化数组相关成员
+    Init();
+    // 设置数组大小
+    SetSize(nSize);
+    // 为每个元素赋默认值
+    for (int i = 0; i < nSize; ++i) {
+        SetAt(i, dValue);
+    }
 }
 
+// 拷贝构造函数
 DArray::DArray(const DArray& arr) {
-	//TODO
+    // 先初始化自身数组
+    Init();
+    // 设置大小与被拷贝数组相同
+    SetSize(arr.GetSize());
+    // 逐个元素拷贝
+    for (int i = 0; i < arr.GetSize(); ++i) {
+        SetAt(i, arr.GetAt(i));
+    }
 }
 
-// deconstructor
+// 析构函数
 DArray::~DArray() {
-	Free();
+    Free();
 }
 
-// display the elements of the array
+// 显示数组元素
 void DArray::Print() const {
-	//TODO
+    for (int i = 0; i < GetSize(); ++i) {
+        std::cout << GetAt(i) << " ";
+    }
+    std::cout << std::endl;
 }
 
-// initilize the array
+// 初始化数组（分配内存等操作）
 void DArray::Init() {
-	//TODO
+    m_pData = nullptr;
+    m_nSize = 0;
 }
 
-// free the array
+// 释放数组内存
 void DArray::Free() {
-	//TODO
+    if (m_pData != nullptr) {
+        delete[] m_pData;
+        m_pData = nullptr;
+    }
+    m_nSize = 0;
 }
 
-// get the size of the array
+// 获取数组大小
 int DArray::GetSize() const {
-	//TODO
-	return 0; // you should return a correct value
+    return m_nSize;
 }
 
-// set the size of the array
+// 设置数组大小
 void DArray::SetSize(int nSize) {
-	//TODO
+    if (nSize < 0) {
+        return;
+    }
+    // 如果大小改变，需要重新分配内存
+    if (nSize != m_nSize) {
+        double* pNewData = new double[nSize];
+        int nCopySize = (nSize < m_nSize) ? nSize : m_nSize;
+        for (int i = 0; i < nCopySize; ++i) {
+            pNewData[i] = m_pData[i];
+        }
+        // 释放旧内存
+        Free();
+        m_pData = pNewData;
+        m_nSize = nSize;
+    }
 }
 
-// get an element at an index
+// 获取指定索引处的元素
 const double& DArray::GetAt(int nIndex) const {
-	//TODO
-	static double ERROR; // you should delete this line
-	return ERROR; // you should return a correct value
+    if (nIndex >= 0 && nIndex < m_nSize) {
+        return m_pData[nIndex];
+    }
+    // 这里可以考虑抛出异常或者按需求返回合适的错误表示
+    static double ERROR;
+    return ERROR;
 }
 
-// set the value of an element 
+// 设置指定索引处元素的值
 void DArray::SetAt(int nIndex, double dValue) {
-	//TODO
+    if (nIndex >= 0 && nIndex < m_nSize) {
+        m_pData[nIndex] = dValue;
+    }
 }
 
-// overload operator '[]'
+// 重载 [] 操作符
 const double& DArray::operator[](int nIndex) const {
-	//TODO
-	static double ERROR; // you should delete this line
-	return ERROR; // you should return a correct value
+    return GetAt(nIndex);
 }
 
-// add a new element at the end of the array
+// 在数组末尾添加新元素
 void DArray::PushBack(double dValue) {
-	//TODO
+    int newSize = m_nSize + 1;
+    SetSize(newSize);
+    SetAt(newSize - 1, dValue);
 }
 
-// delete an element at some index
+// 删除指定索引处的元素
 void DArray::DeleteAt(int nIndex) {
-	//TODO
+    if (nIndex < 0 || nIndex >= m_nSize) {
+        return;
+    }
+    for (int i = nIndex; i < m_nSize - 1; ++i) {
+        m_pData[i] = m_pData[i + 1];
+    }
+    SetSize(m_nSize - 1);
 }
 
-// insert a new element at some index
+// 在指定索引处插入新元素
 void DArray::InsertAt(int nIndex, double dValue) {
-	//TODO
+    if (nIndex < 0 || nIndex > m_nSize) {
+        return;
+    }
+    int newSize = m_nSize + 1;
+    SetSize(newSize);
+    for (int i = m_nSize - 1; i > nIndex; --i) {
+        m_pData[i] = m_pData[i - 1];
+    }
+    m_pData[nIndex] = dValue;
 }
 
-// overload operator '='
-DArray& DArray::operator = (const DArray& arr) {
-	//TODO
-	return *this;
+// 重载赋值操作符
+DArray& DArray::operator=(const DArray& arr) {
+    if (this != &arr) {
+        // 先释放自身原有的内存
+        Free();
+        // 重新分配内存并拷贝元素
+        SetSize(arr.GetSize());
+        for (int i = 0; i < arr.GetSize(); ++i) {
+            SetAt(i, arr.GetAt(i));
+        }
+    }
+    return *this;
 }
