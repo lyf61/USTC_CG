@@ -11,9 +11,11 @@
 #include <QWidget>
 
 #include <vector>
+#include <iostream>
 
 class ViewWidget : public QWidget
 {
+	// Q_OBJECT 表明 ViewWidget 类将使用信号与槽机制。
 	Q_OBJECT
 
 public:

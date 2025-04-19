@@ -61,6 +61,8 @@ void ViewWidget::mouseMoveEvent(QMouseEvent* event)
 
 void ViewWidget::mouseReleaseEvent(QMouseEvent* event)
 {
+	QPainter painter(this);
+
 	if (shape_ != NULL)
 	{
 		draw_status_ = false;
@@ -71,12 +73,14 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent* event)
 
 void ViewWidget::paintEvent(QPaintEvent*)
 {
+
+	std::cout << "fire paintevent automatically" << std::endl;
 	QPainter painter(this);
 
-	for (int i = 0; i < shape_list_.size(); i++)
+	/*for (int i = 0; i < shape_list_.size(); i++)
 	{
 		shape_list_[i]->Draw(painter);
-	}
+	}*/
 
 	if (shape_ != NULL) {
 		shape_->Draw(painter);

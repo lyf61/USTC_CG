@@ -5,3 +5,6 @@
 - Qt5.15开始没有离线安装包，最后安装Qt5.14，不知课程后续兼容性如何
 - VS启动C++项目，需要配置include库、lib库、额外dll三样东西
 - 折腾了一上午，终于启动作业1的Example项目了
+- [x] QtIntro.md
+- [x] QtHello.md
+- [x] QtGDI.md

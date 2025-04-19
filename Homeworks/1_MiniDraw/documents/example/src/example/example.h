@@ -15,11 +15,16 @@ public:
 	~example();
 
 	QMenu *pMenutest;
+	QMenu *pMenu1;
 	QAction *pAction;
+	QAction *pAction1;
+	QAction *pActionExit;
 	QToolBar *main_toolbar_;
 
 private slots:
 	void hello();
+	void compliment();
+	void exit();
 
 private:
 	Ui::exampleClass ui;
